@@ -160,7 +160,9 @@
 <style>
     @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
     @import 'normalize.css';
-
+    *{
+                font-family: "FontAwesome";
+    }
     .createT {
         margin-left: 78%;
         width: 160px;
@@ -226,7 +228,6 @@
     }
 
     p {
-        font-family: "FontAwesome";
         color: #898686;
         padding: 0;
         margin: 0
@@ -246,7 +247,6 @@
 
     input[type="checkbox"]+.label-text:before {
         content: "\f096";
-        font-family: "FontAwesome";
         speak: none;
         font-style: normal;
         font-weight: 400;
