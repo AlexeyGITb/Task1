@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-<vue-snotify class="snotify centerTop"></vue-snotify>
+        <vue-snotify class="snotify centerTop"></vue-snotify>
         <nav class="navbar"></nav>
         <div class="container-fluid">
             <div class="row">
@@ -15,13 +15,12 @@
                 </div>
                 <!---->
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <button type="button" class="btn btn-primary btn-lg createT" data-toggle="modal" data-target="#exampleModal">Create Trip</button>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="text-center modal-title" id="exampleModalLabel">Select Trip id from list below</h5>
+                                    <h5 class="text-center modal-title" id="ModalLabel">Select Trip id from list below</h5>
 
                                 </div>
                                 <div class="modal-body">
@@ -37,14 +36,19 @@
                         </div>
                     </div>
                     <!---->
+                    <div class="container ">
+                                           <div class="container clearfix" style="">
+                                            <button type="button" class="btn btn-primary btn-lg pull-right createT" data-toggle="modal" data-target="#Modal">Create Trip</button>
+
+    </div>
                     <ul>
                         <!-- Trips-->
-                        <li v-for="(trip,index) in trips" :key="index">
+                        <li v-for="(trip,index) in trips" :test="trip.id" :key="index">
                             <div class="container  trip shadow">
                                 <div class="row">
 
                                     <div class="col-4 tripLeft">
-                                        <img :src="trip.imageUrl" :id="'img'+trip.id" class="tripImg" alt="Responsive image"></div>
+                                        <img :src="trip.imageUrl" :id="'img'+trip.id"  class="tripImg" alt="Responsive image"></div>
 
                                     <div class="col-8">
                                         <!--main -->
@@ -64,9 +68,8 @@
                                         <!--description-->
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
-                                               
-                                                <a data-toggle="collapse" class="link" data-parent="#accordion" :href="'#trip' + index"><img class="arrow align-middle" src="src/assets/arrow.png">
-                                                </a>
+
+                                                <a data-toggle="collapse"  class="link" data-parent="#accordion" :href="'#trip' + index"><img class="arrow align-middle" src="src/assets/arrow.png"></a>
                                                 <div :id="'trip' + index" class="panel-collapse collapse in">
                                                     <div class="panel-body row">
                                                         <div class="col-12">
@@ -82,6 +85,7 @@
                             </div>
                         </li>
                     </ul>
+                                        </div>
                 </div>
             </div>
         </div>
@@ -90,9 +94,13 @@
 </template>
 
 <script>
+
     export default {
+        props:['test'],
         name: 'app',
         data: () => ({
+            index:'',
+            test:'',
             activities: [],
             trips: [],
             checkboxesArray: [],
@@ -101,10 +109,11 @@
             tripId: ''
         }),
         methods: {
-            displayNotification() { 
-        this.$snotify.success("Trip successfully created!");
-    },
-            sendData() {  //create new trip
+
+            displayNotification() {
+                this.$snotify.success("Trip successfully created!");
+            },
+            sendData() { //create new trip
                 var test = {
                     tripId: this.tripId
                 }
@@ -114,7 +123,7 @@
                         url: 'http://qa.ridj-it.com/app/trip',
                         data: json,
                         headers: {
-                            'Content-Type': 'application/json'           
+                            'Content-Type': 'application/json'
                         }
                     })
                     .then((response) => {
@@ -143,31 +152,36 @@
             }
         },
         beforeMount() {
-            this.loadTrips()  //Filing checkboxes thru api
+            this.loadTrips() //Filing checkboxes thru api
             axios.get('http://qa.ridj-it.com/app/activity').then(response => {
                 this.activities = response.data
             })
         },
         watch: {
-            checkboxesArray() { 
+            checkboxesArray() {
                 this.loadTrips();
             }
         }
     }
-
 </script>
 
 <style>
     @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
     @import 'normalize.css';
-    *{
-                font-family: "FontAwesome";
+
+    * {
+        font-family: "FontAwesome";
+    }
+
+    .main{
+    
     }
     .createT {
-        margin-left: 78%;
+        margin-right: 9%;
         width: 160px;
     }
-    p{
+
+    p {
         font-size: 1.3em;
     }
 
@@ -192,7 +206,7 @@
         height: 20px;
         width: 20px;
         margin-left: 50%;
-        padding-bottom:2px;
+        padding-bottom: 2px;
     }
 
     .link {
@@ -291,7 +305,6 @@
             transform: scale(1)
         }
     }
-
 </style>
 
 <!--
